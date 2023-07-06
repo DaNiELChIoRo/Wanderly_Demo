@@ -4,15 +4,17 @@ import 'package:demo_wander/HomePage.dart';
 import 'package:demo_wander/storage.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
   Storage().getToken().then((value) =>
       {print('token from storage: $value'), runApp(MyApp(token: value))});
   // runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  String? token = '';
+  final String? token;
 
-  MyApp({this.token, super.key});
+  const MyApp({required this.token, super.key});
 
   // This widget is the root of your application.
   @override
@@ -40,8 +42,9 @@ class MyApp extends StatelessWidget {
       ),
       home: Scaffold(
           appBar: AppBar(),
-          body:
-              token!.isNotEmpty ? const HomePage() : const LoginRegisterPage()),
+          body: (token ?? "").isNotEmpty
+              ? const HomePage()
+              : const LoginRegisterPage()),
     );
   }
 }
@@ -77,12 +80,12 @@ class _LoginRegisterPageState extends State<LoginRegisterPage> {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
-            Text('Wanderly'),
-            Spacer(
+            const Text('Wanderly'),
+            const Spacer(
               flex: 1,
             ),
             TextField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Username',
               ),
               onChanged: (value) => {
@@ -110,17 +113,17 @@ class _LoginRegisterPageState extends State<LoginRegisterPage> {
                 })
               },
             ),
-            Spacer(
+            const Spacer(
               flex: 1,
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: Colors.deepOrange,
-                onPrimary: Colors.white,
+                backgroundColor: Colors.deepOrange,
+                foregroundColor: Colors.white,
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                 ),
-                padding: EdgeInsets.all(15),
+                padding: const EdgeInsets.all(15),
                 // margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               ),
               onPressed: () => {
@@ -128,9 +131,9 @@ class _LoginRegisterPageState extends State<LoginRegisterPage> {
                 print('password $password'),
                 submitLogin(username, password)
               },
-              child: Text('Login'),
+              child: const Text('Login'),
             ),
-            Spacer(
+            const Spacer(
               flex: 1,
             ),
           ],

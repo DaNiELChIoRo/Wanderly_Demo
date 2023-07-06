@@ -56,8 +56,11 @@ class ApiClient {
 
   Future<String> getChatToken() async {
     final url = '$_baseUrl/api/v1/chat-token';
-    final response = await http.get(Uri.parse(url), headers: getHeaders());
-
+    final response = await http
+        .get(Uri.parse(url), headers: getHeaders())
+        .catchError(
+            (error) => {print('error from network getChatToken: $error')});
+    print('response from network getChatToken: $response');
     return jsonDecode(response.body)['data']['token'].toString();
   }
 
