@@ -2,6 +2,8 @@ import 'package:demo_wander/api.dart';
 import 'package:flutter/material.dart';
 import 'package:demo_wander/HomePage.dart';
 import 'package:demo_wander/storage.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:demo_wander/cubit/conter_cubit_cubit.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,32 +21,20 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a blue toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
-        useMaterial3: true,
+    return BlocProvider<CounterCubit>(
+      create: (context) => CounterCubit(),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
+          useMaterial3: true,
+        ),
+        home: Scaffold(
+            appBar: AppBar(),
+            body: (token ?? "").isNotEmpty
+                ? const HomePage()
+                : const LoginRegisterPage()),
       ),
-      home: Scaffold(
-          appBar: AppBar(),
-          body: (token ?? "").isNotEmpty
-              ? const HomePage()
-              : const LoginRegisterPage()),
     );
   }
 }
@@ -61,18 +51,18 @@ class _LoginRegisterPageState extends State<LoginRegisterPage> {
   String password = '';
   bool showHome = false;
 
-  submitLogin(String email, String password) {
-    ApiClient()
-        .loginUser(email, password)
-        .then((value) => {
-              print('response from network:  $value)'),
-              // String token = value['user']['accessToken'],
-              Storage().saveToken(value['user']['accessToken']),
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const HomePage()))
-            })
-        .catchError((error) => {print('error from network: $error')});
-  }
+  // submitLogin(String email, String password) {
+  //   ApiClient()
+  //       .loginUser(email, password)
+  //       .then((value) => {
+  //             print('response from network:  $value)'),
+  //             // String token = value['user']['accessToken'],
+  //             Storage().saveToken(value['user']['accessToken']),
+  //             Navigator.push(context,
+  //                 MaterialPageRoute(builder: (context) => const HomePage()))
+  //           })
+  //       .catchError((error) => {print('error from network: $error')});
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -113,24 +103,49 @@ class _LoginRegisterPageState extends State<LoginRegisterPage> {
                 })
               },
             ),
+            BlocBuilder<CounterCubit, CounterState>(
+              builder: (context, state) {
+                if (state.value == LoginState.loading) {
+                  return const CircularProgressIndicator.adaptive();
+                } else if (state.value == LoginState.error) {
+                  return const Text('Error');
+                } else {
+                  // return empty container
+                  return const SizedBox.shrink();
+                }
+                // return Text(state.counterValue.toString());
+              },
+            ),
             const Spacer(
               flex: 1,
             ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepOrange,
-                foregroundColor: Colors.white,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                ),
-                padding: const EdgeInsets.all(15),
-              ),
-              onPressed: () => {
-                print('username: $username'),
-                print('password $password'),
-                submitLogin(username, password)
+            // BlocListener(listener: listener)
+            BlocListener<CounterCubit, CounterState>(
+              listener: (context, state) {
+                // TODO: implement listener
+                if (state.value == LoginState.loggedIn) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const HomePage()));
+                }
               },
-              child: const Text('Login'),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.deepOrange,
+                  foregroundColor: Colors.white,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
+                  padding: const EdgeInsets.all(15),
+                ),
+                onPressed: () => {
+                  BlocProvider.of<CounterCubit>(context)
+                      .submitLogin(username, password),
+                  // submitLogin(username, password)
+                },
+                child: const Text('Login'),
+              ),
             ),
             const Spacer(
               flex: 1,
