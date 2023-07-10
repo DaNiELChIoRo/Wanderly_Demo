@@ -1,3 +1,4 @@
+import 'package:demo_wander/storage.dart';
 import 'package:flutter/material.dart';
 import 'package:demo_wander/api.dart';
 
@@ -15,24 +16,24 @@ class _HomePageState extends State<HomePage> {
   @override
   initState() {
     super.initState();
-    makeRequests();
+    Storage().getToken().then((value) => {makeRequests(value)});
+    // makeRequests();
   } //
 
-  @override
-  void didUpdateWidget(covariant HomePage oldWidget) {
-    // TODO: implement didUpdateWidget
-    super.didUpdateWidget(oldWidget);
+  // @override
+  // void didUpdateWidget(covariant HomePage oldWidget) {
+  //   super.didUpdateWidget(oldWidget);
 
-    makeRequests();
-  }
+  //   makeRequests();
+  // }
 
-  makeRequests() {
-    ApiClient().getAccessToken().then((value) => {
+  makeRequests(String? token) {
+    ApiClient().getAccessToken(token).then((value) => {
           print('value from getting access token $value'),
-          ApiClient().getChatToken().then((value) => {
+          ApiClient().getChatToken(token).then((value) => {
                 print('value from getting chat token $value'),
                 ApiClient()
-                    .getUsers()
+                    .getUsers(value)
                     .then((value) => {
                           print('value form getting users $value'),
                           setState(() {
@@ -52,8 +53,8 @@ class _HomePageState extends State<HomePage> {
         body: ListView(
           scrollDirection: Axis.vertical,
           children: [
-            if (list.isEmpty) Text('Loading...'),
-            for (var item in list) Text('Home Page'),
+            if (list.isEmpty) const CircularProgressIndicator.adaptive(),
+            for (var item in list) Text('Home Page $item.name'),
           ],
         ));
   }

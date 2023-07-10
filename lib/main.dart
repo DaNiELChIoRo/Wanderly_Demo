@@ -124,7 +124,6 @@ class _LoginRegisterPageState extends State<LoginRegisterPage> {
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                 ),
                 padding: const EdgeInsets.all(15),
-                // margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               ),
               onPressed: () => {
                 print('username: $username'),

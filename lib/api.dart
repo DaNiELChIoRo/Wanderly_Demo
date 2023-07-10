@@ -9,14 +9,17 @@ class ApiClient {
 
   var _token = "";
 
-  getHeaders() {
+  getHeaders(String? token) {
+    token ??= _token;
     return {
       // Adding authorization
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Authorization': 'Bearer $_token',
+      'wap_access_token': '',
+      'Authorization': 'Bearer $token',
       'Connection': 'keep-alive',
-      'X-WANDA-APPNAME': 'Recruit'
+      'X-WANDA-APPNAME': 'Recruit',
+      'Accept-Encoding': 'br;q=1.0, gzip;q=0.9, deflate;q=0.8'
     };
   }
 
@@ -29,6 +32,18 @@ class ApiClient {
   }
 
   ApiClient._internal();
+
+  Map<String, dynamic> validate(http.Response response) {
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      // print('response from network getChatToken: $response');
+      return jsonDecode(response.body); //['data']['token'].toString();
+    } else {
+      // throw Exception('Failed to load album');
+      print('error from network getChatToken: $response');
+      final error = jsonDecode(response.body)['message'] ?? '';
+      throw Exception('unvalid response status code: $error');
+    }
+  }
 
   Future<Map<String, dynamic>> loginUser(
       String username, String password) async {
@@ -46,41 +61,49 @@ class ApiClient {
     // return response;
   }
 
-  Future<String> getAccessToken() async {
+  Future<String> getAccessToken(String? token) async {
     final url = '$_baseLoginUrl/api/v1/auth/me';
-    final response = await http.get(Uri.parse(url), headers: getHeaders());
+    final response = await http.get(Uri.parse(url), headers: getHeaders(token));
 
     print('response from network getAccessToken: $response');
-    return jsonDecode(response.body)[''].toString();
+    return jsonDecode(response.body)['accessToken'].toString();
   }
 
-  Future<String> getChatToken() async {
-    final url = '$_baseUrl/api/v1/chat-token';
+  Future<String> getChatToken(String? token) async {
+    final url = '$_baseLoginUrl/api/v1/chat-token';
     final response = await http
-        .get(Uri.parse(url), headers: getHeaders())
+        .get(Uri.parse(url), headers: getHeaders(token))
         .catchError(
             (error) => {print('error from network getChatToken: $error')});
     print('response from network getChatToken: $response');
     return jsonDecode(response.body)['data']['token'].toString();
   }
 
-  Future<List<Recruiter>> getUsers() async {
-    final url =
-        '$_baseUrl/api/v1/candidates?archived=false&favorite=false&my_candidate=all&order_by=last_login&page=1&propose=false&time_limit=all_time';
-    print("token: $_token");
-    final response = await http
-        .get(Uri.parse(url), headers: getHeaders())
-        .catchError((error) {
+  Future<List<Recruiter>> getUsers(String? token) async {
+    // final url =
+    // '$_baseUrl/api/v1/candidates?archived=false&favorite=false&my_candidate=all&order_by=last_login&page=1&propose=false&time_limit=all_time';
+    final body = {
+      "archived": 'false',
+      "favorite": 'false',
+      "my_candidate": "all",
+      "order_by": "last_login",
+      "page": '1',
+      "propose": 'false',
+      "time_limit": "all_time"
+    };
+    final url = Uri.https('wapi.wanderly.dev', '/api/v1/candidates', body);
+    final response =
+        await http.get(url, headers: getHeaders(token)).catchError((error) {
       print('error from network getUsers: $error');
       // print('stackTrace from network getUsers: $stackTrace')
-      return error;
+      throw Exception('error from network getUsers: $error');
     });
     print('response from network getUsers: $response');
+
+    final json = validate(response);
     // Encode the body to Recuiter List
-    final json = jsonDecode(response.body);
     print('json from network getUsers: $json');
-    final List<Recruiter> users = jsonDecode(response.body)['data']
-            ['candidates']
+    final List<Recruiter> users = json['data']['candidates']
         .map<Recruiter>((json) => Recruiter.fromJSON(json))
         .toList();
     return users;
