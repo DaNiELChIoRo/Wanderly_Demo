@@ -108,7 +108,22 @@ class _LoginRegisterPageState extends State<LoginRegisterPage> {
                 if (state.value == LoginState.loading) {
                   return const CircularProgressIndicator.adaptive();
                 } else if (state.value == LoginState.error) {
-                  return const Text('Error');
+                  return AlertDialog(
+                    title: const Text('Error Alert'),
+                    content: const Text('There was an error logging in'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => BlocProvider.of<CounterCubit>(context)
+                            .submitLogin(username, password),
+                        child: const Text('Retry'),
+                      ),
+                      TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Ok'))
+                    ],
+                  );
                 } else {
                   // return empty container
                   return const SizedBox.shrink();

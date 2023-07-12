@@ -1,0 +1,296 @@
+{
+    "success": true,
+    "data": {
+      "candidates": [
+        {
+          "id": 109732,
+          "email": "download_test33@getnada.com",
+          "phone": "2222222222",
+          "first_name": "Download",
+          "last_name": "Test",
+          "name": "download test",
+          "years_exp": 17,
+          "specialties": [
+            "Care Resource Managers",
+            "Case Investigators",
+            "MPH-Graduates"
+          ],
+          "profession": "Public Health",
+          "license_locations": [
+            "Alaska",
+            "Arizona"
+          ],
+          "documents_completed": [
+            "Personal Info",
+            "Background Info",
+            "Profession",
+            "Education",
+            "Employment History",
+            "Emergency Contact",
+            "Professional Reference",
+            "Resume",
+            "Identification",
+            "License",
+            "Certification",
+            "Medical",
+            "Charge Nurse",
+            "LVN/LPN Competency",
+            "Skills Checklist"
+          ],
+          "preferred_location": null,
+          "searched_location": [
+            "Anaheim, CA"
+          ],
+          "searched_professions": [
+            "LVN/LPN",
+            "RN"
+          ],
+          "searched_specialties": [
+            "Charge Nurse"
+          ],
+          "preferred_shift": null,
+          "searched_shift": [
+            "",
+            "Day"
+          ],
+          "preferred_assignment_length": "",
+          "last_login": "2023-06-17 17:04:47",
+          "photo": "https://s3.us-west-2.amazonaws.com/dev-docs.wanderly.dev/1684789451.109732download_test33%40getnada.com.png",
+          "completion_percentage": 100,
+          "inbox_tags": [
+            "APPLICATION"
+          ],
+          "inbox_unread": false,
+          "inbox_vr_interacted": false,
+          "inbox_last_message": "Download submitted an application.",
+          "last_message_time": "2023-06-17T17:04:47.000Z",
+          "is_anonymous": false,
+          "is_favorite": true,
+          "is_archived": false,
+          "recruiter_assigned": {
+            "id": 108903,
+            "first_name": "Syed",
+            "last_name": "Upsell",
+            "image": null
+          },
+          "is_proposal_allowed": {
+            "mine": false,
+            "agency": true
+          },
+          "propose": true,
+          "propose_day_left": 6,
+          "is_message_enable": true,
+          "is_proposal_enable": true,
+          "channel_id": "CHbd714b5b7e7a4237b592baafec768710",
+          "chat_seen": 0
+        },
+        {
+          "id": 109739,
+          "email": "jvrtest01@getnada.com",
+          "phone": "2222222222",
+          "first_name": "John",
+          "last_name": "Wick",
+          "name": "john wick",
+          "years_exp": 10,
+          "specialties": [
+            "Public Health",
+            "Occupational Health",
+            "Temperature Checker"
+          ],
+          "profession": "LVN/LPN",
+          "license_locations": [
+            "California"
+          ],
+          "documents_completed": [
+            "Personal Info",
+            "Profession",
+            "Employment History",
+            "License",
+            "Resume"
+          ],
+          "preferred_location": null,
+          "searched_location": [
+            "Bakersfield, CA",
+            "Antioch, CA"
+          ],
+          "searched_professions": [
+            "RN",
+            "LVN/LPN"
+          ],
+          "searched_specialties": [
+            "Charge Nurse",
+            "Emergency Room",
+            "Case Manager - LVN/LPN"
+          ],
+          "preferred_shift": null,
+          "searched_shift": [
+            "",
+            "Night",
+            "Mid"
+          ],
+          "preferred_assignment_length": "",
+          "last_login": "2023-05-29 20:34:41",
+          "photo": null,
+          "completion_percentage": 75,
+          "inbox_tags": [
+            "JOB_PROPOSED"
+          ],
+          "inbox_unread": false,
+          "inbox_vr_interacted": false,
+          "inbox_last_message": "You sent a job proposal.",
+          "last_message_time": "2023-05-29T20:34:41.000Z",
+          "is_anonymous": false,
+          "is_favorite": false,
+          "is_archived": false,
+          "recruiter_assigned": {
+            "id": 108903,
+            "first_name": "Syed",
+            "last_name": "Upsell",
+            "image": null
+          },
+          "is_proposal_allowed": {
+            "mine": false,
+            "agency": true
+          },
+          "propose": true,
+          "propose_day_left": 6,
+          "is_message_enable": true,
+          "is_proposal_enable": true,
+          "channel_id": "CH2fb284315191450d96b1aa1f246a344e",
+          "chat_seen": 1
+        },
+        {
+          "id": 109726,
+          "email": "test_kathy42@getnada.com",
+          "phone": "2222222222",
+          "first_name": "A",
+          "last_name": "B",
+          "name": "a b",
+          "years_exp": 8,
+          "specialties": [
+            "Case Investigators"
+          ],
+          "profession": "Public Health",
+          "license_locations": [
+            "Alabama"
+          ],
+          "documents_completed": [
+            "Personal Info",
+            "Profession",
+            "Employment History",
+            "License",
+            "Resume"
+          ],
+          "preferred_location": null,
+          "searched_location": [],
+          "searched_professions": [
+            "RN"
+          ],
+          "searched_specialties": [],
+          "preferred_shift": null,
+          "searched_shift": [
+            ""
+          ],
+          "preferred_assignment_length": "",
+          "last_login": "2023-05-25 13:49:00",
+          "photo": null,
+          "completion_percentage": 75,
+          "inbox_tags": [
+            "PROFILE"
+          ],
+          "inbox_unread": false,
+          "inbox_vr_interacted": false,
+          "inbox_last_message": "A shared a Miscellaneous document.",
+          "last_message_time": "2023-05-25T13:48:59.000Z",
+          "is_anonymous": false,
+          "is_favorite": false,
+          "is_archived": false,
+          "recruiter_assigned": {
+            "id": 108903,
+            "first_name": "Syed",
+            "last_name": "Upsell",
+            "image": null
+          },
+          "is_proposal_allowed": {
+            "mine": false,
+            "agency": true
+          },
+          "propose": true,
+          "propose_day_left": 6,
+          "is_message_enable": true,
+          "is_proposal_enable": true,
+          "channel_id": "CH0e55fffbcfd94f66b85f7b58cb64a9f1",
+          "chat_seen": 1
+        },
+        {
+          "id": 109715,
+          "email": "bob_test65@getnada.com",
+          "phone": "2222222222",
+          "first_name": "Bob",
+          "last_name": "Test",
+          "name": "bob test",
+          "years_exp": 4,
+          "specialties": [
+            "Optician"
+          ],
+          "profession": "Allied",
+          "license_locations": [],
+          "documents_completed": [
+            "Personal Info",
+            "Background Info",
+            "Profession",
+            "Education",
+            "Employment History",
+            "Emergency Contact",
+            "Professional Reference",
+            "Resume",
+            "Identification"
+          ],
+          "preferred_location": null,
+          "searched_location": [],
+          "searched_professions": [
+            "Allied",
+            "RN"
+          ],
+          "searched_specialties": [],
+          "preferred_shift": null,
+          "searched_shift": [
+            ""
+          ],
+          "preferred_assignment_length": "",
+          "last_login": "2023-05-24 21:01:06",
+          "photo": null,
+          "completion_percentage": 100,
+          "inbox_tags": [
+            "QUICK_APPLICATION"
+          ],
+          "inbox_unread": false,
+          "inbox_vr_interacted": false,
+          "inbox_last_message": "Bob submitted a quick application.",
+          "last_message_time": "2023-05-24T21:01:06.000Z",
+          "is_anonymous": false,
+          "is_favorite": false,
+          "is_archived": false,
+          "recruiter_assigned": {
+            "id": 108903,
+            "first_name": "Syed",
+            "last_name": "Upsell",
+            "image": null
+          },
+          "is_proposal_allowed": {
+            "mine": false,
+            "agency": true
+          },
+          "propose": true,
+          "propose_day_left": 6,
+          "is_message_enable": true,
+          "is_proposal_enable": true,
+          "channel_id": "CH73c62a86c3b04498811ea6b23dc8c1b3",
+          "chat_seen": 1
+        }
+      ],
+      "total": 4,
+      "page": 1
+    },
+    "message": "Candidates"
+  }

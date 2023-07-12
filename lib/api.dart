@@ -1,7 +1,11 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 // import 'package:dio/dio.dart'
 import 'package:demo_wander/storage.dart';
+
+import 'models/Recruiter.dart';
 
 class ApiClient {
   final _baseLoginUrl = "https://wapi.wanderly.dev";
@@ -13,7 +17,7 @@ class ApiClient {
     token ??= _token;
     return {
       // Adding authorization
-      'Content-Type': 'application/json',
+      'content-type': 'application/json',
       'Accept': 'application/json',
       'wap_access_token': '',
       'Authorization': 'Bearer $token',
@@ -79,9 +83,22 @@ class ApiClient {
     return jsonDecode(response.body)['data']['token'].toString();
   }
 
-  Future<List<Recruiter>> getUsers(String? token) async {
-    // final url =
-    // '$_baseUrl/api/v1/candidates?archived=false&favorite=false&my_candidate=all&order_by=last_login&page=1&propose=false&time_limit=all_time';
+  Future<List<Candidate>> getUsers(String? token) async {
+    const url =
+        'https://wapi.wanderly.dev/api/v1/candidates/?connection=mine&favorite=false&order_by=last_login&last_activity=60&unread=false&propose=false&page=1&limit=25&order=desc&anonymous=false&anonymous=0&candidates_tab=true&=null';
+
+    const headers = {
+      'content-type': 'application/json',
+      'Accept': 'application/json',
+      'wap_access_token': '',
+      // 'Authorization': 'Bearer $token',
+      'Authorization':
+          'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZWVkYzEzMmZlODgwYjQ1ZjRiOWNkZjQwNmUwZjRjOGQ3ZTFlZTIxNGFlYmM5MGViMTA2MzA2MmFjNmVmNzU1ODA3MzYzZGM0MDM1OTJkYzgiLCJpYXQiOjE2ODkwMzEyNjIsIm5iZiI6MTY4OTAzMTI2MiwiZXhwIjoxNzIwNjUzNjYyLCJzdWIiOiI2MTYiLCJzY29wZXMiOltdfQ.hhB6BeZ5DzukzA_KQEAfygzxNqHk6FJ8P-xOcAdRrmHUNGTZ2O3XXFHOkjqdZftl31JdHxAQTbHuSgsLaWlM3rAcYFaSwqc22rSeKbKl35wIPHM2TUcwQJXxwxQzDONWuF7cvmgc8DYdScD2CcfWquGrLu8HgEXoJtt1W6G13jizmPOD9bZzkOu9VPOFN_FpvnaJkFkUgz-anoDYUH6wKgNWkPxkm8GQQFPkcCU-3wzWKjBD8O_9SpKS7yP3RMlo5BH_ILHFgbVerZHPoB-P5ZGbkAt_eGfj4cCJn45v8TbKYupXfIZBs9VS_03PNU_rS9soCy6DfnqF1u_Cwo6NlEUT84RrdepUumSQ4n5hiaiL0Qzj3LUndICecJTuk0YZuC_BSn61UfS-VBR92QIuKcb33KhamuFvIykgNxq1ct-jyBMOjUNx_VHSL4c1LVAhQn0_LYG1EuPqBu6F6HbMCsuT_0l2_QnSYFFON1FDdmxJAK_6PMZSx8iPc-3o1XbSx37TkpizbMoLuFMQXwIgVdFPqFI-XHqouJtDwI6FxnZEgEDbRHj5v8-qM7sLE1odXWMOEnd96HU3BJJi4pqHprtrCPzaHCQIH1Mzy0hInhtrUtpr41lqLvGew3KDw3hK6T42fjfZN40Le_zElLyHytVO78I8sLz2z3gr21jkSx4',
+      'Connection': 'keep-alive',
+      'X-WANDA-APPNAME': 'Recruit',
+      'Accept-Encoding': 'br;q=1.0, gzip;q=0.9, deflate;q=0.8'
+    };
+
     final body = {
       "archived": 'false',
       "favorite": 'false',
@@ -91,53 +108,38 @@ class ApiClient {
       "propose": 'false',
       "time_limit": "all_time"
     };
-    final url = Uri.https('wapi.wanderly.dev', '/api/v1/candidates', body);
-    final response =
-        await http.get(url, headers: getHeaders(token)).catchError((error) {
+    // final url = Uri.https('wapi.wanderly.dev', '/api/v1/candidates', body);
+    final response = await http
+        .get(Uri.parse(url), headers: headers) //getHeaders(token))
+        .catchError((error) {
       print('error from network getUsers: $error');
       // print('stackTrace from network getUsers: $stackTrace')
       throw Exception('error from network getUsers: $error');
     });
     print('response from network getUsers: $response');
 
-    final json = validate(response);
-    // Encode the body to Recuiter List
-    print('json from network getUsers: $json');
-    final List<Recruiter> users = json['data']['candidates']
-        .map<Recruiter>((json) => Recruiter.fromJSON(json))
-        .toList();
-    return users;
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      print('response from network getChatToken: $response');
+      // return jsonDecode;
+
+      final json = validate(response);
+      // Encode the body to Recuiter List
+      print('json from network getUsers: $json');
+      final List<Candidate> users = json['data']['candidates']
+          .map<Candidate>((json) => Candidate.fromJSON(json))
+          .toList();
+      return users;
+    } else {
+      print('current directory: ' + Directory.current.path);
+      // final input = await File('${Directory.current.path}/candidates.json').readAsString();
+      final input = await rootBundle.loadString('assets/candidates.json');
+      final map = jsonDecode(input);
+
+      final List<Candidate> users = map['data']['candidates']
+          .map<Candidate>((json) => Candidate.fromJSON(json))
+          .toList();
+      return users;
+    }
     // return jsonDecode(response.body).;
-  }
-}
-
-class Recruiter {
-  int? id;
-  String? full_name;
-  String? image;
-  String? first_name;
-  String? last_name;
-  String? firstname;
-  String? lastname;
-
-  Recruiter(
-      {this.id,
-      this.full_name,
-      this.image,
-      this.first_name,
-      this.last_name,
-      this.firstname,
-      this.lastname});
-
-  factory Recruiter.fromJSON(Map<String, dynamic> json) {
-    return Recruiter(
-      id: json['id'],
-      full_name: json['full_name'],
-      image: json['image'],
-      first_name: json['first_name'],
-      last_name: json['last_name'],
-      firstname: json['firstname'],
-      lastname: json['lastname'],
-    );
   }
 }
